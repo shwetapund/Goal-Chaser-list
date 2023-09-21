@@ -1,0 +1,24 @@
+.container{
+    padding:10px;
+    margin:0;
+   
+    min-height: 100vh;
+}
+.app-title{
+    color: white;
+    font-weight:bold;
+    text-align: center;
+    background-color: crimson;
+    width:500px;
+    padding: 10px 50px;
+    display: block;
+    margin: 10px auto;
+    border-radius: 20px;
+}
+.todo-flex-container{
+    display:flex;
+    justify-content: space-around;
+}
+.text-center{
+    text-align: center;
+}

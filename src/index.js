@@ -1,9 +1,11 @@
-import ReactDOM from 'react-dom/client'
-
+import ReactDOM from "react-dom/client"
+import Home from "./views/Home/Home"
+import "./index.css"
 const root = ReactDOM.createRoot(document.getElementById("root"))
 
 root.render(
     <>
-    <h1>Goal Chaser list</h1>
+   
+    <Home/>
     </>
 )
