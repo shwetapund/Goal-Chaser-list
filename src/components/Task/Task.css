@@ -3,10 +3,10 @@
     margin: 10px;
     padding: 10px;
     border-radius: 10px;
-    border:1px solid crimson;
+    border:1px solid #00ccff;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
     position: relative;
-    background-color:  #fde8ec;
+     background-color:white; 
     
 }
 .task-title{
@@ -19,17 +19,24 @@
     position: absolute;
     right: 0;
     top:0;
-    background-color: crimson;
+    background-color: #00ccff;
     color: white;
     border-radius: 0 10px 0 0;
     padding: 2px;
     width: 100px;
     font-weight: bold;
 }
-.delete-img{
-    height: 25px;
+.task-delete-icon{
+    height: 20px;
     position: absolute;
     bottom: 5px;
-    right: 5px;
+    right: 50px;
+    cursor: pointer;
+}
+.task-edit-icon{
+    height: 20px;
+    position: absolute;
+    bottom: 5px;
+    right: 10px;
     cursor: pointer;
 }

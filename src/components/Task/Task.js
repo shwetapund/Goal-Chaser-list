@@ -1,7 +1,8 @@
 import React from "react";
 import "./Task.css"
-import img from "./images/delete.png"
-const Task = ({ id, title, description, priority, removeTaskFromList}) => {
+import imgDelete from "./images/delete.png"
+import imgPencil from './images/pencil.png'
+const Task = ({ id, title, description, priority, removeTaskFromList, setTaskEditable}) => {
     return (
         <>
             <div className="task-container" >
@@ -10,10 +11,19 @@ const Task = ({ id, title, description, priority, removeTaskFromList}) => {
                 <span className="task-priority">🎯 {priority}</span>
                 <span>
 
-                    <img src={img} className="delete-img"
+                    <img src={imgDelete} className="task-delete-icon"
                     onClick={() => {
                   
                     removeTaskFromList(id);
+                }}
+                    />
+                </span>
+                <span>
+
+                    <img src={imgPencil} className="task-edit-icon"
+                    onClick={() => {
+                  
+                        setTaskEditable(id);
                 }}
                     />
                 </span>
