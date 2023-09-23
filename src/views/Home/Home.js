@@ -1,6 +1,12 @@
-import React, { useEffect, useState } from 'react'
-import Task from './../../components/Task/Task'
-import './Home.css'
+import React, { useEffect, useState } from 'react';
+
+
+
+
+import Task from './../../components/Task/Task';
+import './Home.css';
+import showToast from 'crunchy-toast';
+import {saveListToLocalStorage} from './../../Util/LocalStorage';
 const Home = () => {
 
     const [taskList, setTaskList] = useState([
@@ -28,8 +34,12 @@ const Home = () => {
 
     }, [])
 
-    const saveListToLocalStorage = (tasks) => {
-        localStorage.setItem('pinklist', JSON.stringify(tasks))
+  
+
+    const clearInputFields = () => {
+        setTitle('');
+        setDescription('');
+        setPriority('');
     }
 
     const addTaskToList = () => {
@@ -43,11 +53,11 @@ const Home = () => {
         }
         const newTaskList = [...taskList, obj]
         setTaskList(newTaskList)
-        setTitle('');
-        setDescription('');
-        setPriority('');
+        clearInputFields();
+
 
         saveListToLocalStorage(newTaskList);
+        showToast('task added successsfully', 'success', 3000);
     }
     const removeTaskFromList = (id) => {
 
@@ -64,15 +74,16 @@ const Home = () => {
         setTaskList([...tempArray])
 
         saveListToLocalStorage(tempArray);
+        showToast('task deleted successsfully', 'alert', 3000);
     }
 
     const setTaskEditable = (id) => {
-        setIsEdit(true); 
-        setId(id); 
+        setIsEdit(true);
+        setId(id);
         let currentEditTask;
 
         taskList.forEach((task) => {
-            if(task.id === id){
+            if (task.id === id) {
                 currentEditTask = task;
             }
         })
@@ -80,34 +91,33 @@ const Home = () => {
         setTitle(currentEditTask.title);
         setDescription(currentEditTask.description);
         setPriority(currentEditTask.priority);
-         console.log(currentEditTask);                                                           
+        console.log(currentEditTask);
     }
 
-    const updateTask  = () =>{
+    const updateTask = () => {
         let indexToUpdate;
         taskList.forEach((task, i) => {
-            if(task.id === id){
+            if (task.id === id) {
                 indexToUpdate = i;
             }
-           
+
         })
 
         const tempArray = taskList;
         tempArray[indexToUpdate] = {
-            id:id,
-            title:title,
-            description:description,
-            priority:priority
+            id: id,
+            title: title,
+            description: description,
+            priority: priority
         }
 
         setTaskList([...tempArray])
 
         saveListToLocalStorage(tempArray)
+        showToast('task deleted successsfully', 'info', 3000);
 
         setId(0);
-        setTitle('');
-        setDescription('');
-        setPriority('');
+        clearInputFields();
         setIsEdit(false);
     }
     return (
@@ -118,20 +128,22 @@ const Home = () => {
                 <div className='todo-flex-container'>
                     <div>
                         <h1 className='text-center'>Show List</h1>
-                        {taskList.map((taskItem, index) => {
-                            const { id, priority, title, description } = taskItem;
+                        <div className='tasks-container'>
+                            {taskList.map((taskItem, index) => {
+                                const { id, priority, title, description } = taskItem;
 
-                            return <Task id={id}
-                                priority={priority}
-                                title={title}
-                                description={description}
-                                key={index}
-                                removeTaskFromList={removeTaskFromList}
-                                setTaskEditable = {setTaskEditable}
-                            />
+                                return <Task id={id}
+                                    priority={priority}
+                                    title={title}
+                                    description={description}
+                                    key={index}
+                                    removeTaskFromList={removeTaskFromList}
+                                    setTaskEditable={setTaskEditable}
+                                />
 
-                        })
-                        }
+                            })
+                            }
+                        </div>
                     </div>
                     <div>
                         <h1 className='text-center'>
