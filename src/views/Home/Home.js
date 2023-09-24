@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from 'react';
 
-
-
-
 import Task from './../../components/Task/Task';
 import './Home.css';
 import showToast from 'crunchy-toast';
-import {saveListToLocalStorage} from './../../Util/LocalStorage';
+import { saveListToLocalStorage } from './../../Util/LocalStorage';
 const Home = () => {
 
     const [taskList, setTaskList] = useState([
@@ -34,7 +31,7 @@ const Home = () => {
 
     }, [])
 
-  
+
 
     const clearInputFields = () => {
         setTitle('');
@@ -42,8 +39,40 @@ const Home = () => {
         setPriority('');
     }
 
+    const findTaskIndexById = (taskId) => {
+        let index;
+
+        taskList.forEach((task, i) => {
+            if (task.id === taskId) {
+                index = i
+            }
+        })
+        return index;
+    }
+
+    const checkRequiredFields = () => {
+        if(!title) {
+            showToast('Title is required!','alert', 3000);
+            return false;
+        }
+        if(!description) {
+            showToast('Description is required','alert', 3000);
+            return false;
+        }
+        if(!priority) {
+            showToast('Priority is required','akert',3000);
+            return false;
+        }
+        return true;
+    }
+
     const addTaskToList = () => {
-        const randomId = Math.floor(Math.random() * 1000);
+
+       if(checkRequiredFields() === false){
+        return;
+       }
+     const randomId = Math.floor(Math.random() * 1000);
+
         const obj = {
             id: randomId,
             title: title,
@@ -52,22 +81,19 @@ const Home = () => {
 
         }
         const newTaskList = [...taskList, obj]
+
         setTaskList(newTaskList)
-        clearInputFields();
 
+        clearInputFields()
+        
+        saveListToLocalStorage(newTaskList)
 
-        saveListToLocalStorage(newTaskList);
         showToast('task added successsfully', 'success', 3000);
     }
+
     const removeTaskFromList = (id) => {
 
-        let index;
-        taskList.forEach((task, i) => {
-            if (task.id === id) {
-                index = i
-            }
-        })
-
+        const index = findTaskIndexById(id);
         const tempArray = taskList;
         tempArray.splice(index, 1);
 
@@ -80,13 +106,9 @@ const Home = () => {
     const setTaskEditable = (id) => {
         setIsEdit(true);
         setId(id);
-        let currentEditTask;
 
-        taskList.forEach((task) => {
-            if (task.id === id) {
-                currentEditTask = task;
-            }
-        })
+        const index = findTaskIndexById(id);
+        const currentEditTask = taskList[index];
 
         setTitle(currentEditTask.title);
         setDescription(currentEditTask.description);
@@ -95,13 +117,11 @@ const Home = () => {
     }
 
     const updateTask = () => {
-        let indexToUpdate;
-        taskList.forEach((task, i) => {
-            if (task.id === id) {
-                indexToUpdate = i;
-            }
-
-        })
+        if(checkRequiredFields() === false){
+            return;
+           }
+           
+        const indexToUpdate = findTaskIndexById(id);
 
         const tempArray = taskList;
         tempArray[indexToUpdate] = {
@@ -114,7 +134,7 @@ const Home = () => {
         setTaskList([...tempArray])
 
         saveListToLocalStorage(tempArray)
-        showToast('task deleted successsfully', 'info', 3000);
+        showToast('task updated successsfully', 'info', 3000);
 
         setId(0);
         clearInputFields();
@@ -175,19 +195,16 @@ const Home = () => {
                                     placeholder='Enter priority'
                                     className='task-input' />
 
+                              
                                 <div className='btn-container'>
-                                    {
-                                        isEdit ?
-                                            <button className='btn-add-task' type='button'
-                                                onClick={updateTask}>
-                                                Update
-                                            </button> :
-                                            <button className='btn-add-task' type='button'
-                                                onClick={addTaskToList}>
-                                                Add
-                                            </button>
-                                    }
+                                    <button className='btn-add-task' type='button'
+                                        onClick={()=>{
+                                            isEdit ? updateTask() : addTaskToList()
+                                        }}>
+                                        {isEdit ? 'Update' : 'Add'}
+                                    </button>
                                 </div>
+
                             </form>
                         </div>
                     </div>
