@@ -16,6 +16,7 @@
     border-radius: 20px;
     font-family:Arial, Helvetica, sans-serif;
 }
+
 .todo-flex-container{
     display:flex;
     justify-content: space-around;
@@ -57,4 +58,11 @@
 }
 .tasks-container::-webkit-scrollbar {
     width: 5px;
+}
+
+@media screen and (min-width:300px) and (max-width:600px){
+    .app-title{
+        width:200px;
+        font-size: 20px;
+    }
 }
